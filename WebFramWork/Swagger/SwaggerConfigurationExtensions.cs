@@ -186,7 +186,7 @@ namespace WebFramework.Swagger
                 //options.DefaultModelsExpandDepth(-1);
                 //options.DisplayOperationId();
                 //options.DisplayRequestDuration();
-                options.DocExpansion(DocExpansion.None);
+                options.DocExpansion(DocExpansion.List);
                 //options.EnableDeepLinking();
                 //options.EnableFilter();
                 //options.MaxDisplayedTags(5);

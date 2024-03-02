@@ -1,4 +1,6 @@
+using Autofac;
 using Autofac.Core;
+using Autofac.Extensions.DependencyInjection;
 using Common;
 using Microsoft.Extensions.Configuration;
 using Serilog;
@@ -9,6 +11,10 @@ using WebFramWork.Configuration;
 
 SeriLogConfiguration.GetSerilogConfig();
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+// Register services directly with Autofac here. Don't
+// call builder.Populate(), that happens in AutofacServiceProviderFactory.
+builder.Host.ConfigureContainer<ContainerBuilder>(builder => builder.AddServices());
 builder.UseSeriLogAsLogger();
 
 // Add services to the container.
@@ -34,10 +40,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-if (args.Length == 1 && args[0] == "init")
-{
+//if (args.Length == 1 && args[0] == "init")
+//{
     app.IntializeDatabase();
-}
+//}
 app.UseCustomExceptionHandler();
 
 app.UseHsts(app.Environment);

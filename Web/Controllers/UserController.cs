@@ -35,14 +35,14 @@ namespace Web.Controllers
             this.signInManager = signInManager;
         }
         [HttpGet]
-        [Authorize(Roles = "Admin,SuperAdmin")]
+        [Authorize(Roles = "Admin")]
         public override async Task<ActionResult<List<UserDto>>> Get(CancellationToken cancellationToken)
         {
             var users = await userRepository.TableNoTracking.ToListAsync(cancellationToken);
             return Ok(users);
         }
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin,SuperAdmin")]
+        [Authorize(Roles = "Admin")]
         public override async Task<ApiResult<UserDto>> Get(string id, CancellationToken cancellationToken)
         {
             var user = await userManager.FindByIdAsync(id);
@@ -78,17 +78,11 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,SuperAdmin")]
+        [Authorize(Roles = "Admin")]
         public override async Task<ApiResult<UserDto>> Create(UserDto dto, CancellationToken cancellationToken)
         {
 
-            //var user = mapper.Map<Tb_User>(dto);
-            var user = new User
-            {
-                Gender = dto.Gender,
-                UserName = dto.UserName,
-                IsActive = true
-            };
+            var user = mapper.Map<User>(dto);
             var result = await userManager.CreateAsync(user, dto.Password);
             if (result.Succeeded)
             {
@@ -106,16 +100,12 @@ namespace Web.Controllers
         [Authorize]
         public override async Task<ApiResult<UserDto>> Update(string id, UserDto dto, CancellationToken cancellationToken)
         {
-            if (!(User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+            if (!(User.IsInRole("Admin")))
             {
                 dto.Id = GetUserId;
             }
             var updateUser = await userManager.FindByIdAsync(dto.Id);
-            updateUser.Gender = dto.Gender;
-            updateUser.UserName = updateUser.UserName;
-            updateUser.Id = updateUser.Id;
-            updateUser.IsActive = true;
-
+            dto.ToEntity(mapper, updateUser);
             await userManager.UpdateAsync(updateUser);
             if (dto.Password != null & dto.Password != "0")
             {
@@ -125,7 +115,7 @@ namespace Web.Controllers
             return Ok(mapper.Map<UserDto>(updateUser));
         }
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin,SuperAdmin")]
+        [Authorize(Roles = "Admin")]
         public override async Task<ApiResult> Delete(string id, CancellationToken cancellationToken)
         {
             var user = await userRepository.GetByIdAsync(cancellationToken, id);
@@ -134,7 +124,7 @@ namespace Web.Controllers
             return await base.Delete(id, cancellationToken);
         }
         [HttpPost("[action]")]
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AssignRole(string Id, List<string> Roles)
         {
             var user = await userManager.FindByIdAsync(Id);
@@ -144,7 +134,7 @@ namespace Web.Controllers
             return Ok();
         }
         [HttpPost("[action]")]
-        [Authorize(Roles = "Admin,SuperAdmin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetUserRoles(string Id, CancellationToken cancellationToken)
         {
             var user = await userRepository.GetByIdAsync(cancellationToken, Id);
@@ -152,7 +142,7 @@ namespace Web.Controllers
             return Ok(roles);
         }
         [HttpPost("[action]")]
-        [Authorize(Roles = "Admin,SuperAdmin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteRole(string Id, string Role, CancellationToken cancellationToken)
         {
             var user = await userRepository.GetByIdAsync(cancellationToken, Id);
@@ -183,7 +173,7 @@ namespace Web.Controllers
             return mapper.Map<UserDto>(user);
         }
         [HttpGet("[action]")]
-        [Authorize(Roles = "Admin,SuperAdmin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetSystemRoles()
         {
             return Ok(await roleManager.Roles.ToListAsync());

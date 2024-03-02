@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Peyman Dehghan",
+    "classifications": [ "cfrenzel", "core", "console" ],
+    "tags": {
+        "language": "C#",
+        "type": "project"
+      },
+    "identity": "PenguinApi",
+    "name": "Penguin.Api.BoilerPlate",
+    "shortName": "PenguinApi",
+    "sourceName": "ApiFramework",
+    "sources": [
+      {
+        "modifiers": [
+          { "exclude": [ ".vs/**", ".template_config/**",".git/**",".github/**" ] }
+        ]
+      }
+    ]
+  }

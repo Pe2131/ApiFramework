@@ -1,8 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
+	<IsPackable>true</IsPackable>
+    <Title>Penguin-Api</Title>
+    <Authors>Peyman Dehghan</Authors>
+    <PackageId>PenguinApi</PackageId>
+    <Description>this is a easy use library for api project that has every library needed</Description>
+    <Copyright>MIT</Copyright>
+    <PackageIcon>OIG2.jpeg</PackageIcon>
+    <RepositoryUrl>https://github.com/Pe2131/ApiFramework</RepositoryUrl>
+    <PackageTags>Api,APiFramwork,ApiLibrary</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +29,13 @@
 
   <ItemGroup>
     <Folder Include="Models\ViewModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\Top\OneDrive\Desktop\OIG2.jpeg">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
